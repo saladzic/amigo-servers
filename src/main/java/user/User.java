@@ -1,7 +1,7 @@
 package user;
 
-import util.driver.Db;
 import util.mvc.Model;
+import util.driver.Db;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;

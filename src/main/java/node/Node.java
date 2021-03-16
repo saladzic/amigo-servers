@@ -1,8 +1,8 @@
 package node;
 
+import server.Server;
 import util.exception.ResourceException;
 import util.exception.ServerException;
-import server.Server;
 
 public interface Node {
     /**

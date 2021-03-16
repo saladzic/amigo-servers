@@ -23,7 +23,7 @@ public class Order {
             }
         } catch (ResourceException e) {
             // Not enough resources are available ->
-            //      reserve capacity and create warn log for user
+            //      reserve capacity and create warn log for java.user
         }
         throw new ServiceNotFoundException("Service could not be found.");
     }

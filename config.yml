@@ -4,9 +4,9 @@ connections:
     prod:
       scheme: postgres
       host: localhost
-      username: user
-      password: secret
-      dbname: main
+      username: root
+      password: root
+      dbname: amigo_servers
     dev:
       scheme: mysql
       host: localhost

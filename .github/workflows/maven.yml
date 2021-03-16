@@ -35,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: amigo-servers-jar-zip
-          path: /home/runner/work/amigo-servers/target/amigo-servers-*.jar
+          path: /home/runner/work/amigo-servers/amigo-servers/target/amigoservers-backend-*.jar
