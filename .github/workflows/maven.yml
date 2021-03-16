@@ -34,5 +34,5 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: oop-ue13-jar-zip
-          path: /home/runner/work/oop-ue13/oop-ue13/target/oop-ue13-*.jar
+          name: amigo-servers-jar-zip
+          path: /home/runner/work/amigo-servers/target/amigo-servers-*.jar
