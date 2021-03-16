@@ -1,0 +1,15 @@
+mode: dev
+connections:
+  database:
+    prod:
+      scheme: postgres
+      host: localhost
+      username: user
+      password: secret
+      dbname: main
+    dev:
+      scheme: mysql
+      host: localhost
+      username: root
+      password: root
+      dbname: amigo_servers
