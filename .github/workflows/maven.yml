@@ -13,7 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    container: mysql:5.7.30
 
     services:
       mysql:
@@ -32,3 +31,8 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: oop-ue13-jar-zip
+          path: /home/runner/work/oop-ue13/oop-ue13/target/oop-ue13-*.jar
