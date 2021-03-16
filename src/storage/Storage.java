@@ -1,7 +1,7 @@
 package storage;
 
-import exception.ResourceException;
-import exception.ServerException;
+import util.exception.ResourceException;
+import util.exception.ServerException;
 import node.Node;
 import server.Server;
 

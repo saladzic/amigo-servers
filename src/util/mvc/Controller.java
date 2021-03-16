@@ -1,6 +1,6 @@
-package system.mvc;
+package util.mvc;
 
-import system.main.Kernel;
+import util.main.Kernel;
 
 public abstract class Controller extends Kernel {
 }

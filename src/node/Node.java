@@ -1,7 +1,7 @@
 package node;
 
-import exception.ResourceException;
-import exception.ServerException;
+import util.exception.ResourceException;
+import util.exception.ServerException;
 import server.Server;
 
 public interface Node {

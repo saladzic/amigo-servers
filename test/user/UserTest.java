@@ -1,7 +1,7 @@
 package user;
 
 import org.junit.Assert;
-import system.main.Kernel;
+import util.main.Kernel;
 import org.junit.Before;
 import org.junit.Test;
 

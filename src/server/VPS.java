@@ -1,7 +1,7 @@
 package server;
 
-import exception.ResourceException;
-import exception.ServerException;
+import util.exception.ResourceException;
+import util.exception.ServerException;
 
 public class VPS extends Server {
     private int id;

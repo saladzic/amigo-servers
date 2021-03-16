@@ -1,4 +1,4 @@
-package exception;
+package util.exception;
 
 public class ServiceNotFoundException extends Exception {
     public ServiceNotFoundException(String message) {

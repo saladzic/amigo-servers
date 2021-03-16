@@ -1,7 +1,7 @@
 package server;
 
-import exception.ResourceException;
-import exception.ServiceNotFoundException;
+import util.exception.ResourceException;
+import util.exception.ServiceNotFoundException;
 
 public class Order {
     private String id;
