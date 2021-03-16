@@ -44,7 +44,6 @@ public class User extends Model {
             stmt.setBigDecimal(2, balance);
             stmt.setString(3, email);
             stmt.setInt(4, id);
-            System.out.println(stmt);
             stmt.executeUpdate();
             return this;
         } catch (SQLException sqlException) {
