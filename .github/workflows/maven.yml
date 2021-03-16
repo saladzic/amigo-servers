@@ -26,5 +26,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build with Maven
-      - run: apt install maven
-      - run: mvn -B package --file pom.xml
+      run: apt install maven && mvn -B package --file pom.xml
