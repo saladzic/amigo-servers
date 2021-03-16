@@ -19,8 +19,12 @@ jobs:
         image: mysql:5.7.30
         ports:
           - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: amigo_servers
 
     steps:
       - uses: actions/checkout@v2
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - run: apt install maven
+      - run: mvn -B package --file pom.xml
