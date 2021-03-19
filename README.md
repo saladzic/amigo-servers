@@ -2,7 +2,7 @@
 ![alt Build Status](https://github.com/saladzic/amigo-servers/actions/workflows/maven.yml/badge.svg)
 
 # Idea
-My idea is a VPS hosting platform (extensible to webspace, voiceserver, gameserver..) which is mainly programmed in Java and ReactJS.
+My idea is to build a VPS hosting software solution (extensible to webspace, voiceserver, gameserver..) which is mainly programmed in Java and ReactJS with focus on performance, stability and interactivity.
 
 # Contributon
 I am open minded for any pull request and code design suggestions.
