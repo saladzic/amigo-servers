@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS `amigo_user` (
 CREATE TABLE IF NOT EXISTS `amigo_log_system` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `type` varchar(10) NOT NULL,
- `message` varchar(150) NOT NULL,
+ `heading_block` varchar(150) NOT NULL,
+ `message_block` varchar(150) NOT NULL,
  `created_at` int(11) NOT NULL,
  `active` tinyint(1) NOT NULL DEFAULT '1',
  PRIMARY KEY (`id`)
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `amigo_log_user` (
  `type` varchar(10) NOT NULL,
  `heading_block` varchar(150) NOT NULL,
  `message_block` varchar(150) NOT NULL,
+ `created_at` int(11) NOT NULL,
  `active` tinyint(1) NOT NULL DEFAULT '1',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
