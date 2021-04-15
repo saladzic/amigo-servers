@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class SessionController {
-    @RequestMapping(path = "/api/session/login", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/session/login", method = RequestMethod.POST, produces = "application/json")
     public String login(@RequestParam String username,
                         @RequestParam String password,
                         @RequestHeader(value = "User-Agent") String userAgent,
