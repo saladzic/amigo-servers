@@ -15,13 +15,13 @@ public class SessionController {
         try {
             int userId = Session.login(username, password);
             String sessionId = Session.create(userId, userAgent, ip);
-            return "{'success': true, 'session': '" + sessionId + "'}";
+            return "{\"success\": true, \"session\": \"" + sessionId + "\"}";
         } catch (LoginFailedException e) {
             e.printStackTrace();
-            return "{'success': false, 'error': 'login_exception'}";
+            return "{\"success\": false, \"error\": \"login_exception\"}";
         } catch (ServerException e) {
             e.printStackTrace();
-            return "{'success': false, 'error': 'server_exception'}";
+            return "{\"success\": false, \"error\": \"server_exception\"}";
         }
     }
 }
