@@ -11,7 +11,7 @@ services:
     volumes:
       - ./database/db.sql:/db.sql
   pma:
-    image: phpmyadmin/phpmyadmin:5.0.2
+    image: phpmyadmin/phpmyadmin:latest
     environment:
       PMA_HOST: db
     ports:
