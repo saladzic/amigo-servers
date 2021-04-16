@@ -9,19 +9,20 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class Config {
-    private String mode;
+    private final String mode;
+    private final int sessionExpiration;
 
-    private String prodScheme;
-    private String prodHost;
-    private String prodUsername;
-    private String prodPassword;
-    private String prodDbname;
+    private final String prodScheme;
+    private final String prodHost;
+    private final String prodUsername;
+    private final String prodPassword;
+    private final String prodDbname;
 
-    private String devScheme;
-    private String devHost;
-    private String devUsername;
-    private String devPassword;
-    private String devDbname;
+    private final String devScheme;
+    private final String devHost;
+    private final String devUsername;
+    private final String devPassword;
+    private final String devDbname;
 
     public Config() {
         try {
@@ -35,6 +36,7 @@ public class Config {
             Map<String, String> test = (Map<String, String>) database.get("test");
 
             mode = data.get("mode").toString();
+            sessionExpiration = (int) data.get("sessionExpiration");
 
             prodScheme = prod.get("scheme");
             prodHost = prod.get("host");
@@ -49,11 +51,16 @@ public class Config {
             devDbname = dev.get("dbname");
         } catch (FileNotFoundException e) {
             System.out.println("Config not found!");
+            throw new RuntimeException("Config not found!");
         }
     }
 
     public String getMode() {
         return mode;
+    }
+
+    public int getSessionExpiration() {
+        return sessionExpiration;
     }
 
     public String getProdScheme() {
