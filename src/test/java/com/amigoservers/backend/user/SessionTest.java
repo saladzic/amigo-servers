@@ -16,12 +16,13 @@ public class SessionTest extends Kernel {
     public void logout() {
         try {
             Session session = new Session()
-                    .login("angelo", "test123", "", "");
+                    .login("angelo", "test", "", "");
             Assert.assertTrue(session.isValid());
             session.logout();
             Assert.assertFalse(session.isValid());
         } catch (LoginFailedException exception) {
             exception.printStackTrace();
+            Assert.fail();
         }
     }
 
