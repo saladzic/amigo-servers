@@ -35,7 +35,7 @@ public class Session extends Model {
 
             Db db = new Db();
             PreparedStatement preparedStatement = db.getDb()
-                    .prepareStatement("SELECT token FROM amigo_session WHERE token=? AND active=1 AND last_action+" + hours +">UNIX_TIMESTAMP()");
+                    .prepareStatement("SELECT active FROM amigo_session WHERE token=? AND active=1 AND last_action+" + hours +">UNIX_TIMESTAMP()");
             preparedStatement.setString(1, sessionId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
@@ -81,7 +81,7 @@ public class Session extends Model {
             Db db = new Db();
             Connection connection = db.getDb();
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO amigo_session " +
-                    "(token,user_id,user_agent,ip_address,created_at) VALUES (?,?,?,?,UNIX_TIMESTAMP())");
+                    "(token,user_id,user_agent,ip_address,created_at,last_action) VALUES (?,?,?,?,UNIX_TIMESTAMP(),UNIX_TIMESTAMP())");
             stmt.setString(1, token);
             stmt.setInt(2, userId);
             stmt.setString(3, userAgent);
