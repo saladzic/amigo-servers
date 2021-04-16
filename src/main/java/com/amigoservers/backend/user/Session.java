@@ -2,7 +2,7 @@ package com.amigoservers.backend.user;
 
 import com.amigoservers.backend.util.driver.Db;
 import com.amigoservers.backend.util.exception.LoginFailedException;
-import com.amigoservers.backend.util.exception.ServerException;
+import com.amigoservers.backend.util.main.Config;
 import com.amigoservers.backend.util.main.RandomString;
 import com.amigoservers.backend.util.mvc.Model;
 
@@ -15,26 +15,67 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Session extends Model {
-    public static int login(String username, String password) throws LoginFailedException, ServerException {
+    private String sessionId;
+
+    public Session() {
+    }
+
+    public Session(String sessionid) {
+        this.sessionId = sessionid;
+    }
+
+    public String getId() {
+        return sessionId;
+    }
+
+    public boolean isValid() {
+        try {
+            Config config = new Config();
+            int hours = config.getSessionExpiration();
+
+            Db db = new Db();
+            PreparedStatement preparedStatement = db.getDb()
+                    .prepareStatement("SELECT token FROM amigo_session WHERE token=? AND active=1 AND last_action+" + hours +">UNIX_TIMESTAMP()");
+            preparedStatement.setString(1, sessionId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
+    public void logout() {
+        try {
+            Db db = new Db();
+            Connection connection = db.getDb();
+            PreparedStatement stmt = connection.prepareStatement("UPDATE amigo_session SET active=0 WHERE token=?");
+            stmt.setString(1, sessionId);
+            stmt.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public Session login(String username, String password, String userAgent, String ip) throws LoginFailedException {
         try {
             Db db = new Db();
             PreparedStatement preparedStatement = db.getDb()
                     .prepareStatement("SELECT id FROM amigo_user WHERE username=? AND password=?");
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, Session.generateHash(password));
+            preparedStatement.setString(2, generateHash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt("id");
-            } else {
-                throw new LoginFailedException();
+                int userId = resultSet.getInt("id");
+                return create(userId, userAgent, ip);
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
-            throw new ServerException(exception.getMessage());
         }
+        throw new LoginFailedException();
     }
 
-    public static String create(int userId, String userAgent, String ip) {
+    private Session create(int userId, String userAgent, String ip) {
         String token = RandomString.random(15);
         try {
             Db db = new Db();
@@ -46,18 +87,19 @@ public class Session extends Model {
             stmt.setString(3, userAgent);
             stmt.setString(4, ip);
             stmt.executeUpdate();
-            return token;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            sessionId = token;
+            return this;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
         return null;
     }
 
-    public static String generateHash(String str) {
+    private String generateHash(String str) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] hash = md.digest(str.getBytes(StandardCharsets.UTF_8));
-            return Session.convertToHex(hash);
+            return convertToHex(hash);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
@@ -69,7 +111,7 @@ public class Session extends Model {
      * @param raw the byte[] to convert
      * @return the string the given byte[] represents
      */
-    public static String convertToHex(byte[] raw) {
+    private String convertToHex(byte[] raw) {
         StringBuilder sb = new StringBuilder();
         for (byte b : raw) {
             sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
