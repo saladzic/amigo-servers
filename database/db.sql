@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `amigo_session` (
   `user_agent` varchar(100) DEFAULT NULL,
   `ip_address` varchar(100) DEFAULT NULL,
   `created_at` int(11) unsigned NOT NULL,
+  `last_action` int(11) unsigned NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
