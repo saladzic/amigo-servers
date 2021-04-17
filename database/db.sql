@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `amigo_user` (
   `balance` decimal(10,2) DEFAULT '0.00',
   `email` varchar(150) DEFAULT NULL,
   `ip_address` varchar(100) DEFAULT NULL,
+  `created_at` int(11) unsigned NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
