@@ -57,12 +57,12 @@ public class Session extends Model {
         }
     }
 
-    public Session login(String username, String password, String userAgent, String ip) throws LoginFailedException {
+    public Session login(String email, String password, String userAgent, String ip) throws LoginFailedException {
         try {
             Db db = new Db();
             PreparedStatement preparedStatement = db.getDb()
-                    .prepareStatement("SELECT id FROM amigo_user WHERE username=? AND password=?");
-            preparedStatement.setString(1, username);
+                    .prepareStatement("SELECT id FROM amigo_user WHERE email=? AND password=?");
+            preparedStatement.setString(1, email);
             preparedStatement.setString(2, generateHash(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -117,5 +117,30 @@ public class Session extends Model {
             sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();
+    }
+
+    public boolean register(String email, String password) {
+        try {
+            Db db = new Db();
+            Connection connection = db.getDb();
+
+            // Check if email is already registered
+            PreparedStatement stmt = connection.prepareStatement("SELECT id FROM amigo_user WHERE email = ?");
+            stmt.setString(1, email);
+            ResultSet res = stmt.executeQuery();
+            if (res.next()) {
+                return false;
+            }
+
+            // Register user
+            stmt = connection.prepareStatement("INSERT INTO amigo_user " +
+                    "(email,password,created_at) VALUES (?,?,UNIX_TIMESTAMP())");
+            stmt.setString(1, email);
+            stmt.setString(2, generateHash(password));
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }

@@ -16,7 +16,7 @@ public class SessionTest extends Kernel {
     public void logout() {
         try {
             Session session = new Session()
-                    .login("angelo", "test", "", "");
+                    .login("angelo@example.com", "test", "", "");
             Assert.assertTrue(session.isValid());
             session.logout();
             Assert.assertFalse(session.isValid());
@@ -29,16 +29,26 @@ public class SessionTest extends Kernel {
     @Test(expected = LoginFailedException.class)
     public void loginFailed() throws LoginFailedException {
         new Session()
-                .login("angelo", "", "", "");
+                .login("angelo@example.com", "", "", "");
     }
 
     @Test
     public void loginSuccess() {
         try {
             new Session()
-                    .login("angelo", "test", "", "");
+                    .login("angelo@example.com", "test", "", "");
         } catch (LoginFailedException exception) {
             Assert.fail();
         }
+    }
+
+    @Test
+    public void register() {
+        boolean register = new Session()
+                .register("angelo@example.com", "test");
+        Assert.assertFalse(register);
+        register = new Session()
+                .register("angelo@example.com_84843253", "test");
+        Assert.assertTrue(register);
     }
 }

@@ -48,6 +48,8 @@ public class Db {
                 }
             } catch (SQLException exception) {
                 exception.printStackTrace();
+                System.out.println("Error: " + exception.getMessage());
+                System.out.println("The connection to the database failed");
             }
         } else if (scheme.equals("postgresql")) {
             // ToDo: PostgreSQL driver implementation

@@ -18,7 +18,7 @@ public class UserTest extends Kernel {
         User user = new User();
         user.setId(1)
             .get();
-        Assert.assertEquals("angelo", user.getUsername());
+        Assert.assertEquals("angelo@example.com", user.getEmail());
         Assert.assertNull(user.setId(1848534).get());
     }
 

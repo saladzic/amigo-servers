@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class SessionController {
     @RequestMapping(path = "/api/session/login", method = RequestMethod.POST, produces = "application/json")
-    public String login(@RequestParam String username,
+    public String login(@RequestParam String email,
                         @RequestParam String password,
                         @RequestHeader(name = "User-Agent") String userAgent,
                         @RequestHeader(name = "X-FORWARDED-FOR", defaultValue = "") String ip) {
         try {
             Session session = new Session()
-                    .login(username, password, userAgent, ip);
+                    .login(email, password, userAgent, ip);
             return "{\"success\": true, \"session\": \"" + session.getId() + "\"}";
         } catch (LoginFailedException e) {
             e.printStackTrace();
@@ -26,5 +26,13 @@ public class SessionController {
         new Session(sessionId)
                 .logout();
         return "{\"success\": true}";
+    }
+
+    @RequestMapping(path = "/api/session/register", method = RequestMethod.POST, produces = "application/json")
+    public String register(@RequestParam String email,
+                        @RequestParam String password) {
+        boolean registration = new Session()
+                .register(email, password);
+        return "{\"success\": " + registration + "}";
     }
 }

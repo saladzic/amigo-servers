@@ -10,21 +10,19 @@ import java.sql.SQLException;
 
 public class User extends Model {
     private int id;
-    private String username;
-    private BigDecimal balance;
     private String email;
+    private BigDecimal balance;
 
     public User get() {
         try {
             Db db = new Db();
             PreparedStatement preparedStatement = db.getDb()
-                    .prepareStatement("SELECT username,balance,email FROM amigo_user WHERE id=?");
+                    .prepareStatement("SELECT email,balance FROM amigo_user WHERE id=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                username = resultSet.getString("username");
-                balance = resultSet.getBigDecimal("balance");
                 email = resultSet.getString("email");
+                balance = resultSet.getBigDecimal("balance");
                 return this;
             } else {
                 return null;
@@ -39,11 +37,10 @@ public class User extends Model {
         try {
             Db db = new Db();
             PreparedStatement stmt = db.getDb()
-                    .prepareStatement("UPDATE amigo_user SET username=?,balance=?,email=? WHERE id=?");
-            stmt.setString(1, username);
+                    .prepareStatement("UPDATE amigo_user SET email=?,balance=? WHERE id=?");
+            stmt.setString(1, email);
             stmt.setBigDecimal(2, balance);
-            stmt.setString(3, email);
-            stmt.setInt(4, id);
+            stmt.setInt(3, id);
             stmt.executeUpdate();
             return this;
         } catch (SQLException sqlException) {
@@ -58,15 +55,6 @@ public class User extends Model {
 
     public User setId(int id) {
         this.id = id;
-        return this;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public User setUsername(String username) {
-        this.username = username;
         return this;
     }
 
