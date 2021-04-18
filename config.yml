@@ -1,4 +1,5 @@
 mode: dev
+sessionExpiration: 4
 connections:
   database:
     prod:
