@@ -31,14 +31,33 @@ public class Session extends Model {
     public boolean isValid() {
         try {
             Config config = new Config();
-            int hours = config.getSessionExpiration();
+            int hours = 3600 * config.getSessionExpiration();
 
-            Db db = new Db();
-            PreparedStatement preparedStatement = db.getDb()
+            PreparedStatement preparedStatement = getDb()
                     .prepareStatement("SELECT active FROM amigo_session WHERE token=? AND active=1 AND last_action+" + hours +">UNIX_TIMESTAMP()");
             preparedStatement.setString(1, sessionId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isAdmin() {
+        try {
+            int userId = getUserId();
+            if (userId == 0) {
+                return false;
+            }
+            PreparedStatement preparedStatement = getDb()
+                    .prepareStatement("SELECT admin FROM amigo_user WHERE id=?");
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                return false;
+            }
+            return resultSet.getBoolean("admin");
         } catch (SQLException exception) {
             exception.printStackTrace();
             return false;
@@ -141,6 +160,30 @@ public class Session extends Model {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return false;
+        }
+    }
+
+    public int getUserId() {
+        try {
+            Db db = new Db();
+            Connection connection = db.getDb();
+
+            // Check if session is still valid
+            if (!isValid()) {
+                return 0;
+            }
+
+            // Check if email is already registered
+            PreparedStatement stmt = connection.prepareStatement("SELECT user_id FROM amigo_session WHERE token = ?");
+            stmt.setString(1, getId());
+            ResultSet res = stmt.executeQuery();
+            if (res.next()) {
+                return res.getInt("user_id");
+            }
+            return 0;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return 0;
         }
     }
 }
