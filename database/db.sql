@@ -69,3 +69,24 @@ CREATE TABLE IF NOT EXISTS `amigo_text_block` (
  `text` varchar(250) NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `amigo_cart` (
+  `id` varchar(72) NOT NULL,
+  `created_at` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `amigo_cart_item` (
+  `id` int(11) NOT NULL,
+  `cart_id` varchar(72) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `amigo_product` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `name_id` varchar(150) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `combi_product_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

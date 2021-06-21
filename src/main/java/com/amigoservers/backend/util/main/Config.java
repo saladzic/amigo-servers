@@ -11,6 +11,7 @@ import java.util.Map;
 public class Config {
     private final String mode;
     private final int sessionExpiration;
+    private final int tax;
 
     private final String prodScheme;
     private final String prodHost;
@@ -37,6 +38,7 @@ public class Config {
 
             mode = data.get("mode").toString();
             sessionExpiration = (int) data.get("sessionExpiration");
+            tax = (int) data.get("tax");
 
             prodScheme = prod.get("scheme");
             prodHost = prod.get("host");
@@ -61,6 +63,10 @@ public class Config {
 
     public int getSessionExpiration() {
         return sessionExpiration;
+    }
+
+    public double getTax() {
+        return tax;
     }
 
     public String getProdScheme() {
