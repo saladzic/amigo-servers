@@ -36,9 +36,9 @@ public class Config {
             Yaml yaml = new Yaml();
             Map<String, Object> data = yaml.load(input);
             Map<String, Object> paymentMethods = (Map<String, Object>) data.get("paymentMethods");
-            Map<String, Object> paypal = (Map<String, Object>) data.get("paypal");
-            Map<String, Object> paypalSandbox = (Map<String, Object>) data.get("sandbox");
-            Map<String, Object> paypalLive = (Map<String, Object>) data.get("live");
+            Map<String, Object> paypal = (Map<String, Object>) paymentMethods.get("paypal");
+            Map<String, Object> paypalSandbox = (Map<String, Object>) paypal.get("sandbox");
+            Map<String, Object> paypalLive = (Map<String, Object>) paypal.get("live");
             Map<String, Object> connections = (Map<String, Object>) data.get("connections");
             Map<String, Object> database = (Map<String, Object>) connections.get("database");
             Map<String, String> prod = (Map<String, String>) database.get("prod");
