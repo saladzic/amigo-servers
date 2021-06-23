@@ -13,6 +13,11 @@ public class Config {
     private final int sessionExpiration;
     private final int tax;
 
+    private final String paypalSandboxClientId;
+    private final String paypalSandboxSecret;
+    private final String paypalLiveClientId;
+    private final String paypalLiveSecret;
+
     private final String prodScheme;
     private final String prodHost;
     private final String prodUsername;
@@ -30,6 +35,10 @@ public class Config {
             InputStream input = new FileInputStream(new File("config.yml"));
             Yaml yaml = new Yaml();
             Map<String, Object> data = yaml.load(input);
+            Map<String, Object> paymentMethods = (Map<String, Object>) data.get("paymentMethods");
+            Map<String, Object> paypal = (Map<String, Object>) data.get("paypal");
+            Map<String, Object> paypalSandbox = (Map<String, Object>) data.get("sandbox");
+            Map<String, Object> paypalLive = (Map<String, Object>) data.get("live");
             Map<String, Object> connections = (Map<String, Object>) data.get("connections");
             Map<String, Object> database = (Map<String, Object>) connections.get("database");
             Map<String, String> prod = (Map<String, String>) database.get("prod");
@@ -39,6 +48,11 @@ public class Config {
             mode = data.get("mode").toString();
             sessionExpiration = (int) data.get("sessionExpiration");
             tax = (int) data.get("tax");
+
+            paypalSandboxClientId = paypalSandbox.get("clientId").toString();
+            paypalSandboxSecret = paypalSandbox.get("secret").toString();
+            paypalLiveClientId = paypalLive.get("clientId").toString();
+            paypalLiveSecret = paypalLive.get("secret").toString();
 
             prodScheme = prod.get("scheme");
             prodHost = prod.get("host");
@@ -67,6 +81,22 @@ public class Config {
 
     public double getTax() {
         return tax;
+    }
+
+    public String getPaypalSandboxClientId() {
+        return paypalSandboxClientId;
+    }
+
+    public String getPaypalSandboxSecret() {
+        return paypalSandboxSecret;
+    }
+
+    public String getPaypalLiveClientId() {
+        return paypalLiveClientId;
+    }
+
+    public String getPaypalLiveSecret() {
+        return paypalLiveSecret;
     }
 
     public String getProdScheme() {
