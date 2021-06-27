@@ -35,6 +35,7 @@ public class Payment extends Thread {
 
                         if (type.equals("cashin")) {
                             stmt = connection.prepareStatement("SELECT balance FROM amigo_user WHERE id=?");
+                            stmt.setInt(1, userId);
                             res = stmt.executeQuery();
                             if (res.next()) {
                                 BigDecimal balance = res.getBigDecimal("balance");
@@ -42,7 +43,11 @@ public class Payment extends Thread {
                                 stmt = connection.prepareStatement("UPDATE amigo_user SET balance=? WHERE id=?");
                                 stmt.setBigDecimal(1, balance);
                                 stmt.setInt(2, userId);
+                                stmt.executeUpdate();
+                                System.out.println("Cashin: " + total + "€");
                             }
+                        } else {
+                            System.out.println("Order: " + total + "€");
                         }
                     }
                 }
