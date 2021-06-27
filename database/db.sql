@@ -72,14 +72,16 @@ CREATE TABLE IF NOT EXISTS `amigo_text_block` (
 
 CREATE TABLE `amigo_cart` (
   `id` varchar(72) NOT NULL,
-  `created_at` int(11) NOT NULL
+  `created_at` int(11) NOT NULL,
+   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `amigo_cart_item` (
   `id` int(11) NOT NULL,
   `cart_id` varchar(72) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(11) NOT NULL,
+   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `amigo_product` (
@@ -88,5 +90,20 @@ CREATE TABLE `amigo_product` (
   `name_id` varchar(150) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `combi_product_id` int(11) NOT NULL
+  `combi_product_id` int(11) NOT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `amigo_transaction` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `tax` decimal(10,2) NOT NULL,
+  `sub_total` decimal(10,2) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `paypal_order_id` varchar(100) NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `transaction_type` varchar(50) NOT NULL,
+  `paid` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` int(11) NOT NULL,
+   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

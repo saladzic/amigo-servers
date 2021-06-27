@@ -12,11 +12,14 @@ public class Config {
     private final String mode;
     private final int sessionExpiration;
     private final int tax;
+    private final String brand;
 
     private final String paypalSandboxClientId;
     private final String paypalSandboxSecret;
     private final String paypalLiveClientId;
     private final String paypalLiveSecret;
+    private final String paypalSuccess;
+    private final String paypalCancel;
 
     private final String prodScheme;
     private final String prodHost;
@@ -39,6 +42,7 @@ public class Config {
             Map<String, Object> paypal = (Map<String, Object>) paymentMethods.get("paypal");
             Map<String, Object> paypalSandbox = (Map<String, Object>) paypal.get("sandbox");
             Map<String, Object> paypalLive = (Map<String, Object>) paypal.get("live");
+            Map<String, Object> paypalLinks = (Map<String, Object>) paypal.get("links");
             Map<String, Object> connections = (Map<String, Object>) data.get("connections");
             Map<String, Object> database = (Map<String, Object>) connections.get("database");
             Map<String, String> prod = (Map<String, String>) database.get("prod");
@@ -48,11 +52,14 @@ public class Config {
             mode = data.get("mode").toString();
             sessionExpiration = (int) data.get("sessionExpiration");
             tax = (int) data.get("tax");
+            brand = data.get("brand").toString();
 
             paypalSandboxClientId = paypalSandbox.get("clientId").toString();
             paypalSandboxSecret = paypalSandbox.get("secret").toString();
             paypalLiveClientId = paypalLive.get("clientId").toString();
             paypalLiveSecret = paypalLive.get("secret").toString();
+            paypalSuccess = paypalLinks.get("success").toString();
+            paypalCancel = paypalLinks.get("cancel").toString();
 
             prodScheme = prod.get("scheme");
             prodHost = prod.get("host");
@@ -83,6 +90,10 @@ public class Config {
         return tax;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
     public String getPaypalSandboxClientId() {
         return paypalSandboxClientId;
     }
@@ -97,6 +108,14 @@ public class Config {
 
     public String getPaypalLiveSecret() {
         return paypalLiveSecret;
+    }
+
+    public String getPaypalSuccess() {
+        return paypalSuccess;
+    }
+
+    public String getPaypalCancel() {
+        return paypalCancel;
     }
 
     public String getProdScheme() {

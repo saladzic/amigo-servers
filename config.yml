@@ -1,6 +1,18 @@
 mode: dev
 sessionExpiration: 4
 tax: 20
+brand: amigo servers
+paymentMethods:
+  paypal:
+    sandbox:
+      clientId: sandboxClientId
+      secret: sandboxSecretId
+    live:
+      clientId: liveClientId
+      secret: liveSecret
+    links:
+      success: https://google.de/?r=return
+      cancel: https://google.de/?r=cancel
 connections:
   database:
     prod:

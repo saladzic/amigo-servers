@@ -3,6 +3,8 @@ package com.amigoservers.backend.cart;
 import com.amigoservers.backend.util.main.RandomString;
 import com.amigoservers.backend.util.mvc.Model;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +24,7 @@ public class Cart extends Model {
         items = new ArrayList<>();
     }
 
-    public Cart get() {
+    public Cart fetch() {
         try {
             Connection connection = getDb();
             PreparedStatement stmt = connection.prepareStatement("SELECT product_id,quantity" +
@@ -87,7 +89,81 @@ public class Cart extends Model {
         return items;
     }
 
-    public void setItems(List<CartItem> items) {
-        this.items = items;
+    public void addItem(CartItem item) {
+        try {
+            items.add(item);
+            clearItem(item.getProductId());
+            PreparedStatement stmt = getDb().prepareStatement("INSERT INTO amigo_cart_item " +
+                    "(cart_id,product_id,quantity) VALUES (?,?,?)");
+            stmt.setString(1, id);
+            stmt.setInt(2, item.getProductId());
+            stmt.setInt(3, item.getQuantity());
+            stmt.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void clearItem(int productId) {
+        try {
+            PreparedStatement stmt = getDb().prepareStatement("DELETE FROM amigo_cart_item WHERE cart_id=? AND product_id=?");
+            stmt.setString(1, id);
+            stmt.setInt(2, productId);
+            stmt.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public BigDecimal getTax() {
+        Cart cart = new Cart(id).fetch();
+        if (cart == null) {
+            return null;
+        }
+        List<CartItem> items = cart.getItems();
+        BigDecimal total = new BigDecimal(0);
+        Tax tax = new Tax();
+        BigDecimal taxFee = tax.getTaxFee().divide(new BigDecimal(100));
+        for (int x = 0; x < items.size(); x++) {
+            BigDecimal price = new BigDecimal(items.get(x).getQuantity());
+            price = price.multiply(items.get(x).getProduct().getPrice());
+            total = total.add(price);
+        }
+        return taxFee.multiply(total).round(new MathContext(2));
+    }
+
+    public BigDecimal getSubTotal() {
+        Cart cart = new Cart(id).fetch();
+        if (cart == null) {
+            return null;
+        }
+        List<CartItem> items = cart.getItems();
+        BigDecimal total = new BigDecimal(0);
+        Tax tax = new Tax();
+        BigDecimal taxFee = tax.getTaxFee().divide(new BigDecimal(100));
+        for (int x = 0; x < items.size(); x++) {
+            BigDecimal price = new BigDecimal(items.get(x).getQuantity());
+            price = price.multiply(items.get(x).getProduct().getPrice());
+            total = total.add(price);
+        }
+        BigDecimal taxTotal = taxFee.multiply(total).round(new MathContext(2));
+        return total.subtract(taxTotal);
+    }
+
+    public BigDecimal getTotal() {
+        Cart cart = new Cart(id).fetch();
+        if (cart == null) {
+            return null;
+        }
+        List<CartItem> items = cart.getItems();
+        BigDecimal total = new BigDecimal(0);
+        Tax tax = new Tax();
+        BigDecimal taxFee = tax.getTaxFee().divide(new BigDecimal(100));
+        for (int x = 0; x < items.size(); x++) {
+            BigDecimal price = new BigDecimal(items.get(x).getQuantity());
+            price = price.multiply(items.get(x).getProduct().getPrice());
+            total = total.add(price);
+        }
+        return total;
     }
 }
